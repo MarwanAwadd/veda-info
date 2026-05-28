@@ -1,0 +1,947 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Veda — The Clinic Operating System</title>
+    <meta
+      name="description"
+      content="A client overview of what Veda does — the platform features that run a modern specialty clinic."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        /* Veda design system tokens */
+        --primary: #2e9b96;
+        --primary-strong: #257b77;
+        --secondary: #a3c6bc;
+        --active-module: #eaf5f4;
+        --canvas: #fbfbf8;
+        --ink: #272522;
+        --ink-soft: #878681;
+        --border: #e2e8f0;
+        --error: #de7a62;
+        --shadow-soft: 0 1px 2px rgba(39, 37, 34, 0.04),
+          0 12px 28px rgba(39, 37, 34, 0.05);
+        --shadow-hover: 0 1px 2px rgba(39, 37, 34, 0.06),
+          0 22px 44px rgba(46, 155, 150, 0.12);
+        --radius-sm: 12px;
+        --radius-md: 18px;
+        --radius-lg: 28px;
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-weight: 400;
+        color: var(--ink);
+        background: var(--canvas);
+        line-height: 1.55;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+
+      a {
+        color: var(--primary-strong);
+        text-decoration: none;
+        border-bottom: 1px solid transparent;
+        transition: border-color 160ms ease;
+      }
+      a:hover {
+        border-bottom-color: var(--primary-strong);
+      }
+
+      .shell {
+        max-width: 1180px;
+        margin: 0 auto;
+        padding: 56px 28px 96px;
+      }
+
+      /* ---------- Top bar ---------- */
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-bottom: 32px;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+      }
+
+      .brand__logo {
+        width: 44px;
+        height: 44px;
+        padding: 6px;
+        background: var(--canvas);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        display: grid;
+        place-items: center;
+      }
+      .brand__logo img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        display: block;
+      }
+
+      .brand__name {
+        font-weight: 700;
+        font-size: 20px;
+        letter-spacing: -0.02em;
+        color: var(--ink);
+      }
+
+      .topbar__meta {
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--ink-soft);
+        letter-spacing: 0.02em;
+        text-transform: uppercase;
+      }
+
+      /* ---------- Hero ---------- */
+      .hero {
+        padding: 96px 0 80px;
+        display: grid;
+        grid-template-columns: 1.15fr 0.85fr;
+        gap: 64px;
+        align-items: center;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 6px 14px;
+        background: var(--active-module);
+        color: var(--primary-strong);
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        border-radius: 999px;
+        border: 1px solid rgba(46, 155, 150, 0.18);
+      }
+      .eyebrow::before {
+        content: "";
+        width: 6px;
+        height: 6px;
+        border-radius: 999px;
+        background: var(--primary);
+      }
+
+      .hero h1 {
+        margin: 24px 0 18px;
+        font-size: clamp(40px, 5.4vw, 64px);
+        line-height: 1.05;
+        font-weight: 700;
+        letter-spacing: -0.025em;
+        color: var(--ink);
+      }
+      .hero h1 em {
+        font-style: normal;
+        color: var(--primary);
+      }
+
+      .hero p {
+        font-size: 18px;
+        line-height: 1.65;
+        color: var(--ink-soft);
+        max-width: 540px;
+      }
+      .hero p strong {
+        color: var(--ink);
+        font-weight: 600;
+      }
+
+      .hero__actions {
+        margin-top: 32px;
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 22px;
+        border-radius: 999px;
+        font-family: inherit;
+        font-weight: 600;
+        font-size: 14px;
+        letter-spacing: -0.005em;
+        cursor: pointer;
+        border: 1px solid transparent;
+        transition: transform 160ms ease, box-shadow 160ms ease,
+          background 160ms ease;
+      }
+      .btn--primary {
+        background: var(--primary);
+        color: #ffffff;
+      }
+      .btn--primary:hover {
+        background: var(--primary-strong);
+        transform: translateY(-1px);
+        box-shadow: 0 8px 20px rgba(46, 155, 150, 0.28);
+      }
+      .btn--ghost {
+        background: transparent;
+        color: var(--ink);
+        border-color: var(--border);
+      }
+      .btn--ghost:hover {
+        background: var(--active-module);
+        border-color: rgba(46, 155, 150, 0.3);
+      }
+
+      .hero__visual {
+        position: relative;
+        aspect-ratio: 1 / 1;
+        max-width: 420px;
+        margin-left: auto;
+        background:
+          radial-gradient(
+            circle at 30% 25%,
+            rgba(46, 155, 150, 0.18),
+            transparent 60%
+          ),
+          radial-gradient(
+            circle at 75% 80%,
+            rgba(163, 198, 188, 0.35),
+            transparent 55%
+          ),
+          var(--active-module);
+        border: 1px solid var(--border);
+        border-radius: 36px;
+        display: grid;
+        place-items: center;
+        overflow: hidden;
+      }
+      .hero__visual::after {
+        content: "";
+        position: absolute;
+        inset: 18px;
+        border-radius: 30px;
+        border: 1px dashed rgba(46, 155, 150, 0.3);
+        pointer-events: none;
+      }
+      .hero__visual img {
+        width: 62%;
+        height: auto;
+        position: relative;
+        z-index: 1;
+        filter: drop-shadow(0 18px 30px rgba(46, 155, 150, 0.18));
+      }
+
+      /* ---------- Section header ---------- */
+      .section-header {
+        max-width: 720px;
+        margin: 0 0 48px;
+      }
+      .section-header h2 {
+        margin: 14px 0 12px;
+        font-size: clamp(28px, 3.4vw, 40px);
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        color: var(--ink);
+      }
+      .section-header p {
+        font-size: 17px;
+        color: var(--ink-soft);
+        margin: 0;
+      }
+
+      /* ---------- Pillars strip ---------- */
+      .pillars {
+        margin: 96px 0 0;
+        padding: 40px 36px;
+        background: var(--active-module);
+        border: 1px solid rgba(46, 155, 150, 0.2);
+        border-radius: var(--radius-lg);
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 32px;
+      }
+      .pillar h3 {
+        font-size: 16px;
+        font-weight: 600;
+        letter-spacing: -0.01em;
+        margin: 0 0 6px;
+        color: var(--primary-strong);
+      }
+      .pillar p {
+        margin: 0;
+        font-size: 14px;
+        color: var(--ink);
+        line-height: 1.6;
+      }
+
+      /* ---------- Feature group ---------- */
+      .group {
+        margin-top: 88px;
+      }
+      .group__title {
+        display: flex;
+        align-items: baseline;
+        gap: 14px;
+        margin: 0 0 28px;
+      }
+      .group__title h3 {
+        margin: 0;
+        font-size: 22px;
+        font-weight: 600;
+        letter-spacing: -0.015em;
+        color: var(--ink);
+      }
+      .group__title span {
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--ink-soft);
+      }
+
+      .features {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 24px;
+      }
+
+      .features--spotlight {
+        grid-template-columns: 1.4fr 1fr;
+      }
+
+      .feature {
+        position: relative;
+        background: #ffffff;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-md);
+        padding: 28px 26px 26px;
+        box-shadow: var(--shadow-soft);
+        transition: transform 200ms ease, box-shadow 200ms ease,
+          border-color 200ms ease;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+      .feature:hover {
+        transform: translateY(-3px);
+        box-shadow: var(--shadow-hover);
+        border-color: rgba(46, 155, 150, 0.35);
+      }
+
+      .feature__icon {
+        width: 44px;
+        height: 44px;
+        border-radius: 14px;
+        background: var(--active-module);
+        color: var(--primary-strong);
+        display: grid;
+        place-items: center;
+        border: 1px solid rgba(46, 155, 150, 0.18);
+      }
+      .feature__icon svg {
+        width: 22px;
+        height: 22px;
+      }
+
+      .feature__title {
+        font-size: 20px;
+        font-weight: 600;
+        letter-spacing: -0.015em;
+        color: var(--ink);
+        margin: 0;
+        line-height: 1.25;
+      }
+
+      .feature__lede {
+        font-size: 14.5px;
+        color: var(--ink-soft);
+        margin: 0;
+        line-height: 1.6;
+      }
+
+      .feature__list {
+        list-style: none;
+        margin: 4px 0 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .feature__list li {
+        position: relative;
+        padding-left: 22px;
+        font-size: 14px;
+        color: var(--ink);
+        line-height: 1.5;
+      }
+      .feature__list li::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 8px;
+        width: 10px;
+        height: 10px;
+        border-radius: 4px;
+        background: var(--secondary);
+        border: 1px solid rgba(46, 155, 150, 0.4);
+      }
+
+      /* Spotlight feature card (full-width within row) */
+      .feature--spotlight {
+        background:
+          linear-gradient(
+            145deg,
+            rgba(46, 155, 150, 0.06) 0%,
+            transparent 55%
+          ),
+          #ffffff;
+        padding: 36px 36px 32px;
+      }
+      .feature--spotlight .feature__title {
+        font-size: 26px;
+      }
+      .feature--spotlight .feature__lede {
+        font-size: 15.5px;
+        max-width: 520px;
+      }
+      .feature--spotlight .feature__icon {
+        width: 52px;
+        height: 52px;
+        border-radius: 16px;
+      }
+      .feature--spotlight .feature__icon svg {
+        width: 26px;
+        height: 26px;
+      }
+
+      .feature__visual {
+        display: grid;
+        place-items: center;
+        background:
+          radial-gradient(
+            circle at 30% 30%,
+            rgba(46, 155, 150, 0.18),
+            transparent 60%
+          ),
+          var(--active-module);
+        border: 1px solid rgba(46, 155, 150, 0.2);
+        border-radius: var(--radius-md);
+        padding: 28px;
+        min-height: 260px;
+      }
+      .feature__visual svg {
+        width: 100%;
+        max-width: 280px;
+        height: auto;
+      }
+
+      /* ---------- Closing note ---------- */
+      .closing {
+        margin-top: 96px;
+        padding: 56px 48px;
+        background: #ffffff;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        text-align: center;
+        box-shadow: var(--shadow-soft);
+      }
+      .closing h2 {
+        margin: 0 0 12px;
+        font-size: clamp(26px, 3vw, 34px);
+        font-weight: 700;
+        letter-spacing: -0.02em;
+      }
+      .closing p {
+        max-width: 620px;
+        margin: 0 auto;
+        color: var(--ink-soft);
+        font-size: 17px;
+      }
+
+      footer {
+        margin-top: 64px;
+        padding-top: 24px;
+        border-top: 1px solid var(--border);
+        font-size: 13px;
+        color: var(--ink-soft);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      /* ---------- Responsive ---------- */
+      @media (max-width: 880px) {
+        .hero {
+          grid-template-columns: 1fr;
+          padding: 56px 0 48px;
+          gap: 40px;
+        }
+        .hero__visual {
+          margin: 0 auto;
+        }
+        .features--spotlight {
+          grid-template-columns: 1fr;
+        }
+        .pillars,
+        .closing {
+          padding: 32px 24px;
+        }
+        .shell {
+          padding: 32px 20px 64px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="shell">
+      <!-- Top bar -->
+      <header class="topbar">
+        <div class="brand">
+          <div class="brand__logo">
+            <img src="../assets/veda-ui-logo-main.svg" alt="Veda logo" />
+          </div>
+          <div class="brand__name">Veda</div>
+        </div>
+        <div class="topbar__meta">Platform Overview</div>
+      </header>
+
+      <!-- Hero -->
+      <section class="hero">
+        <div>
+          <span class="eyebrow">Clinic Operating System</span>
+          <h1>
+            Everything your specialty clinic needs, <em>in one calm place.</em>
+          </h1>
+          <p>
+            Veda is the operating system for modern specialty clinics — built
+            around <strong>real patients, real schedules, and real money</strong>.
+            One platform for the clinical, operational, and financial work that
+            keeps the practice running.
+          </p>
+          <div class="hero__actions">
+            <a class="btn btn--primary" href="#features">See what Veda does</a>
+            <a class="btn btn--ghost" href="#pillars">Why Veda</a>
+          </div>
+        </div>
+        <div class="hero__visual" aria-hidden="true">
+          <img src="../assets/veda-ui-logo-main.svg" alt="" />
+        </div>
+      </section>
+
+      <!-- Pillars -->
+      <section id="pillars" class="pillars">
+        <div class="pillar">
+          <h3>One patient, everywhere</h3>
+          <p>
+            A single patient identity that follows the person across every
+            clinic, every visit, every record.
+          </p>
+        </div>
+        <div class="pillar">
+          <h3>Clinic-scoped by design</h3>
+          <p>
+            Every chart, invoice, and stock entry stays inside the clinic it
+            belongs to, with permission controls staff can trust.
+          </p>
+        </div>
+        <div class="pillar">
+          <h3>Audit-ready from day one</h3>
+          <p>
+            Append-only ledgers for cash flow, waste, and consents. What
+            happened is preserved, exactly as it happened.
+          </p>
+        </div>
+        <div class="pillar">
+          <h3>Designed for long days</h3>
+          <p>
+            A warm, low-fatigue interface tuned for healthcare professionals
+            working through dense, back-to-back schedules.
+          </p>
+        </div>
+      </section>
+
+      <!-- Features -->
+      <section id="features">
+        <div class="section-header" style="margin-top: 96px">
+          <span class="eyebrow">What Veda Does</span>
+          <h2>The features that run a modern clinic.</h2>
+          <p>
+            Veda is organized around how a clinic actually works — patients
+            first, then the operations and finances that support great care.
+          </p>
+        </div>
+
+        <!-- Group 1: Clinical -->
+        <div class="group">
+          <div class="group__title">
+            <h3>For your patients and providers</h3>
+            <span>Clinical Care</span>
+          </div>
+
+          <div class="features features--spotlight">
+            <!-- Spotlight: Patient Hub -->
+            <article class="feature feature--spotlight">
+              <div class="feature__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                  stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="8" r="4" />
+                  <path d="M4 21a8 8 0 0 1 16 0" />
+                </svg>
+              </div>
+              <h3 class="feature__title">The Patient Hub</h3>
+              <p class="feature__lede">
+                One unified patient record that follows the person across every
+                clinic — never duplicated, always up to date. Each clinic keeps
+                its own chart, notes, and relationship data on top of a single
+                shared identity.
+              </p>
+              <ul class="feature__list">
+                <li>Cross-clinic patient lookup before creating a new record</li>
+                <li>Per-clinic chart numbers and relationship status</li>
+                <li>Module-aware tabs for clinical, billing, inventory, schedule</li>
+                <li>Bulk import templates for migrating existing patients</li>
+              </ul>
+            </article>
+
+            <!-- Visual companion -->
+            <div class="feature__visual" aria-hidden="true">
+              <svg viewBox="0 0 320 280" xmlns="http://www.w3.org/2000/svg">
+                <!-- Central patient -->
+                <circle cx="160" cy="140" r="44" fill="#ffffff"
+                  stroke="#2e9b96" stroke-width="2" />
+                <circle cx="160" cy="124" r="14" fill="#2e9b96" />
+                <path d="M138 160 a22 22 0 0 1 44 0"
+                  fill="none" stroke="#2e9b96" stroke-width="2.5"
+                  stroke-linecap="round" />
+                <!-- Clinic nodes -->
+                <g fill="#ffffff" stroke="#a3c6bc" stroke-width="2">
+                  <rect x="30" y="30" width="68" height="48" rx="12" />
+                  <rect x="222" y="30" width="68" height="48" rx="12" />
+                  <rect x="30" y="202" width="68" height="48" rx="12" />
+                  <rect x="222" y="202" width="68" height="48" rx="12" />
+                </g>
+                <g fill="#878681" font-family="Plus Jakarta Sans, sans-serif"
+                  font-size="11" font-weight="600" text-anchor="middle">
+                  <text x="64" y="59">Clinic A</text>
+                  <text x="256" y="59">Clinic B</text>
+                  <text x="64" y="231">Clinic C</text>
+                  <text x="256" y="231">Clinic D</text>
+                </g>
+                <!-- Connecting lines -->
+                <g stroke="#a3c6bc" stroke-width="1.5"
+                  stroke-dasharray="4 4" fill="none">
+                  <path d="M98 54 L 122 116" />
+                  <path d="M222 54 L 198 116" />
+                  <path d="M98 226 L 122 164" />
+                  <path d="M222 226 L 198 164" />
+                </g>
+              </svg>
+            </div>
+          </div>
+
+          <div class="features" style="margin-top: 24px">
+            <!-- Dermatology Workspace -->
+            <article class="feature">
+              <div class="feature__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                  stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M9 3h6l1 3h3v15H5V6h3z" />
+                  <path d="M9 12h6M9 16h4" />
+                </svg>
+              </div>
+              <h3 class="feature__title">Dermatology Clinical Workspace</h3>
+              <p class="feature__lede">
+                The clinical surface for dermatology providers, built around how
+                they actually work — visual, structured, and safe.
+              </p>
+              <ul class="feature__list">
+                <li>Body maps and lesion logging tied to the patient</li>
+                <li>Annotated images with full version history</li>
+                <li>Treatment catalog shared with billing and scheduling</li>
+                <li>Consent capture with an immutable e-consent ledger</li>
+                <li>High-risk medication tracking with refill safety</li>
+              </ul>
+            </article>
+
+            <!-- Consents & Documentation -->
+            <article class="feature">
+              <div class="feature__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                  stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M5 3h11l3 3v15H5z" />
+                  <path d="M9 12l2 2 4-4" />
+                </svg>
+              </div>
+              <h3 class="feature__title">Consents &amp; Documentation</h3>
+              <p class="feature__lede">
+                Every signed consent and clinical note is preserved exactly as
+                it was captured — no silent edits, no missing paper.
+              </p>
+              <ul class="feature__list">
+                <li>E-consent capture linked to the encounter</li>
+                <li>Append-only consent ledger you can rely on</li>
+                <li>Structured notes alongside free-text observations</li>
+                <li>Per-patient timeline across every clinic visit</li>
+              </ul>
+            </article>
+          </div>
+        </div>
+
+        <!-- Group 2: Operations -->
+        <div class="group">
+          <div class="group__title">
+            <h3>For your operations</h3>
+            <span>Run the Practice</span>
+          </div>
+
+          <div class="features">
+            <!-- Inventory -->
+            <article class="feature">
+              <div class="feature__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                  stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M3 7l9-4 9 4-9 4z" />
+                  <path d="M3 7v10l9 4 9-4V7" />
+                  <path d="M12 11v10" />
+                </svg>
+              </div>
+              <h3 class="feature__title">Inventory &amp; Regimens</h3>
+              <p class="feature__lede">
+                Live stock per clinic, with the difference between back-of-house
+                supplies, retail products, and prescribed regimens built in.
+              </p>
+              <ul class="feature__list">
+                <li>Per-clinic inventory items with cost and quantity</li>
+                <li>Append-only waste and discrepancy logs with offsets</li>
+                <li>Retail tagging for products sold to patients</li>
+                <li>Skincare regimens prescribed and dispensed in-app</li>
+                <li>Demand forecasting from upcoming appointments</li>
+              </ul>
+            </article>
+
+            <!-- Smart Scheduling -->
+            <article class="feature">
+              <div class="feature__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                  stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="5" width="18" height="16" rx="2" />
+                  <path d="M3 9h18M8 3v4M16 3v4" />
+                  <path d="M8 14h3M13 14h3M8 17h3" />
+                </svg>
+              </div>
+              <h3 class="feature__title">Smart Scheduling</h3>
+              <p class="feature__lede">
+                A calendar that understands availability, resources, and the
+                full appointment lifecycle — and tells the rest of Veda when
+                something happens.
+              </p>
+              <ul class="feature__list">
+                <li>Provider availability with real conflict detection</li>
+                <li>Bookable resources for rooms, chairs, and equipment</li>
+                <li>Full lifecycle: booked → confirmed → in-room → checked-out</li>
+                <li>Treatment encounters with multi-phase support</li>
+                <li>Lifecycle events that trigger billing and inventory</li>
+              </ul>
+            </article>
+
+            <!-- Multi-Clinic & Permissions -->
+            <article class="feature">
+              <div class="feature__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                  stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 2l9 4-9 4-9-4z" />
+                  <path d="M3 12l9 4 9-4" />
+                  <path d="M3 17l9 4 9-4" />
+                </svg>
+              </div>
+              <h3 class="feature__title">Multi-Clinic &amp; Permissions</h3>
+              <p class="feature__lede">
+                Built for clinic groups from day one. Each clinic has its own
+                workspace, while group-wide views and admins still see the
+                whole picture.
+              </p>
+              <ul class="feature__list">
+                <li>Clinic-group and per-clinic admin roles</li>
+                <li>Four access levels per module: none, read, write, manage</li>
+                <li>One-click scope selector to switch clinics</li>
+                <li>Permission-aware navigation per user</li>
+                <li>Soft deactivation that preserves staff history</li>
+              </ul>
+            </article>
+          </div>
+        </div>
+
+        <!-- Group 3: Financials -->
+        <div class="group">
+          <div class="group__title">
+            <h3>For your financial health</h3>
+            <span>Money, Done Right</span>
+          </div>
+
+          <div class="features">
+            <!-- Cash Flow & Invoicing -->
+            <article class="feature">
+              <div class="feature__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                  stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M3 17l5-5 4 4 8-9" />
+                  <path d="M14 7h6v6" />
+                </svg>
+              </div>
+              <h3 class="feature__title">Cash Flow &amp; Invoicing</h3>
+              <p class="feature__lede">
+                An append-only cash-flow ledger and multi-rate invoicing built
+                for the realities of specialty clinics — medical and cosmetic,
+                side by side.
+              </p>
+              <ul class="feature__list">
+                <li>Append-only ledger corrected with balancing entries</li>
+                <li>Multi-rate invoicing on a single patient bill</li>
+                <li>Payments, reconciliation, and insurance receivables</li>
+                <li>Treatment-plan financing with tracked progress</li>
+              </ul>
+            </article>
+
+            <!-- Payroll & Commissions -->
+            <article class="feature">
+              <div class="feature__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                  stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="6" width="18" height="12" rx="2" />
+                  <circle cx="12" cy="12" r="2.5" />
+                  <path d="M6 9v6M18 9v6" />
+                </svg>
+              </div>
+              <h3 class="feature__title">Payroll &amp; Commissions</h3>
+              <p class="feature__lede">
+                Provider payouts, commissions, and basic payroll grounded in
+                the work that actually happened — not loose spreadsheets.
+              </p>
+              <ul class="feature__list">
+                <li>Per-staff records connected to clinics and providers</li>
+                <li>Commission rules tied to performed treatments</li>
+                <li>Basic payroll runs with clear, auditable history</li>
+                <li>Treatment-encounter level cost-of-goods attribution</li>
+              </ul>
+            </article>
+
+            <!-- Revenue Dashboards -->
+            <article class="feature">
+              <div class="feature__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                  stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 20V10M10 20V4M16 20v-7M22 20H2" />
+                </svg>
+              </div>
+              <h3 class="feature__title">Revenue Dashboards</h3>
+              <p class="feature__lede">
+                Know where the money is coming from and where it is going —
+                today, this month, and across every treatment plan.
+              </p>
+              <ul class="feature__list">
+                <li>Actual revenue per treatment plan</li>
+                <li>Outstanding balances and overdue receivables</li>
+                <li>Projected revenue from booked appointments</li>
+                <li>Per-clinic breakdowns with group-wide rollups</li>
+              </ul>
+            </article>
+          </div>
+        </div>
+
+        <!-- Group 4: Trust -->
+        <div class="group">
+          <div class="group__title">
+            <h3>For your peace of mind</h3>
+            <span>Trust &amp; Safety</span>
+          </div>
+
+          <div class="features">
+            <!-- Audit-Ready -->
+            <article class="feature">
+              <div class="feature__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                  stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z" />
+                  <path d="M9 12l2 2 4-4" />
+                </svg>
+              </div>
+              <h3 class="feature__title">Audit-Ready by Design</h3>
+              <p class="feature__lede">
+                Patient PII, cash, waste, and consents are protected with the
+                same level of care you'd expect from your most trusted
+                financial systems.
+              </p>
+              <ul class="feature__list">
+                <li>Append-only ledgers for cash, waste, and consents</li>
+                <li>Structured logs with patient-data redaction</li>
+                <li>Per-user, per-clinic, per-entity audit views</li>
+                <li>Soft deactivation so history is never erased</li>
+              </ul>
+            </article>
+
+            <!-- Automation -->
+            <article class="feature">
+              <div class="feature__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                  stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M13 2L3 14h7l-1 8 10-12h-7z" />
+                </svg>
+              </div>
+              <h3 class="feature__title">Automated Workflows</h3>
+              <p class="feature__lede">
+                The modules talk to each other so your team doesn't have to
+                hand-carry information between systems.
+              </p>
+              <ul class="feature__list">
+                <li>Inventory forecasts from upcoming appointments</li>
+                <li>Auto-triggered invoicing on check-out</li>
+                <li>Cost-of-goods attributed to treatments performed</li>
+                <li>Projected revenue surfaced alongside actuals</li>
+              </ul>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- Closing -->
+      <section class="closing">
+        <h2>One platform, growing with your practice.</h2>
+        <p>
+          Veda brings clinical work, operations, and finance onto a single,
+          audit-ready system — designed for clinics that want clarity and
+          confidence without sacrificing the calm of their workspace.
+        </p>
+      </section>
+
+      <footer>
+        <div>© Veda — A unified clinic operating system.</div>
+        <div>Plus Jakarta Sans · Deep Actinic Teal</div>
+      </footer>
+    </div>
+  </body>
+</html>
